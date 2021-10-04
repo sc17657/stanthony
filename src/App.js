@@ -6,6 +6,7 @@ import members from './components/AllMembers/members';
 import contact from './components/contact';
 import { Switch, Route, Link } from "react-router-dom";
 import Members from './components/AllMembers/members';
+import Member_detail from './components/AllMembers/MemberDetail/member_detail';
 
 class App extends Component {
   constructor() {
@@ -24,9 +25,24 @@ class App extends Component {
   }
   addUser = async (event) => {
     event.preventDefault();
-    const member = await axios.post(this.apiUrl, {
+    const response = await axios.post(this.apiUrl, {
       name: event.target.name.value
-    })
+    });
+    const tempMembers = this.state.users;
+    tempMembers.push(response.data.users);
+
+    this.setState({users: tempMembers})
+
+    event.target.name.value = "";
+  };
+
+  update = async (event) => {
+    event.preventDefault();
+    const response = await axios.put(this.apiUrl, {
+      name: event.target.name.value
+    });
+    
+    
   };
 
   render() { 
@@ -50,8 +66,16 @@ class App extends Component {
           /> }
       />
 
-        <Route path="/Member/:id" exact component={member_detail} />
-        <Route path="/Member/:id/Contact" component={contact} />
+        <Route path="/Member/:id" 
+        component={() => <Member_detail
+        details={this.state.users}
+        updateMember={this.update}
+          /> }
+      />
+
+
+        <Route path="/Member/:id/Contact" 
+        component={contact} />
 
         
       </Switch>

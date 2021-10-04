@@ -3,10 +3,16 @@ import React from "react";
 import './members.css';
 
 export default function Members(props) {
-        const members = props.member.map((users, key) => {
-              return <li key={key}>{users.name}</li>;
+        const members = props.member.map((users) => {
+              return (
+
+              <li key={users.name}>
+                <Link to={`/Member/${users.id}`}>{users.name}</Link>
+              </li>
+
+              )
         })
-  
+
   return (
     <div className="members">
       <h2>All Members</h2>
