@@ -38,8 +38,12 @@ class App extends Component {
 
   update = async (event) => {
     event.preventDefault();
-    const response = await axios.put(this.apiUrl, {
-      name: event.target.name.value
+    const updateUrl = this.apiUrl + event.target.id.value
+    const response = await axios.put(updateUrl, {
+      name: event.target.name.value,
+      loss: event.target.loss.value,
+
+      
     });
     
     
@@ -53,8 +57,7 @@ class App extends Component {
 
         <Link to='/'>Home</Link> | 
         <Link to='/Member'>Members List</Link> |
-        <Link to ='/Member/:id'>Member Details</Link> | 
-        <Link to ='/Member/:id/Contact'>Member Contact Info</Link>
+        {/* <Link to ='/Member/:id/Contact'>Member Contact Info</Link> */}
         
       </nav>
 
@@ -67,7 +70,8 @@ class App extends Component {
       />
 
         <Route path="/Member/:id" 
-        component={() => <Member_detail
+        component={(routerProps) => <Member_detail
+        {...routerProps}
         details={this.state.users}
         updateMember={this.update}
           /> }
